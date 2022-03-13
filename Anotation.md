@@ -321,3 +321,38 @@ useEffect(() => {
     getProducts()
   }, [])
 ```
+
+### Intervalo de consultas.
+
+Aplicando um filtro nas consultas baseado em um intervalo. Pra conseguir utilizar esse intervalo precisamos do **orderBy**, então irei utilizar a funcao startAt(2) e endAt(10), e por exemplo irei trazer tudo oque esteja nesse intervalo, caso deseje por exemplo remover algum produto que esteja com a quantidade 3 irei utilizar a seguinte funcao .startAfter(2)
+
+```tsx
+useEffect(() => {
+    async function getProducts() {
+      try {
+        const subscribe =  firestore()
+          .collection('products')
+          .orderBy('quantity','asc')
+          // buscar onde a quantidade seja maior que 1
+          .startAt(1)
+          // buscar onde a quantidade seja maior que 2.
+          .startAfter(2)
+          // buscar onde a quantidade seja menor que 10.
+          .endAt(10)
+          // buscar onde a quantidade seja menor que 11.
+          .endBefore(11)
+          .onSnapshot(querySnapshot => {
+            const products = querySnapshot.docs.map(doc => ({
+              id: doc.id,
+              ...doc.data()
+            })) as ProductProps[]
+            setProducts(products)
+          })
+          
+        // Sempre atentar a esse retorno pra destruir o subscribe, quando o componente for destruido
+        return () => subscribe();
+      } catch (error) { console.log(error) }
+    }
+    getProducts()
+  }, [])
+```
