@@ -178,3 +178,27 @@ async function handleProductAdd() {
     }
   }
 ```
+
+### Leitura unica de documentos
+
+Dessa maneira eu faco a leitura dos documentos desta collection uma unica vez.
+
+```tsx
+useEffect(() => {
+    async function getProducts() {
+      try {
+        const { docs } = await firestore()
+          .collection('products')
+          .get();
+        const products = docs.map(doc => ({
+          id: doc.id,
+          ...doc.data(),
+        })) as ProductProps[];
+        setProducts(products)
+      } catch (error) { console.log(error) }
+    }
+    getProducts()
+  }, [])
+  ```
+
+  
