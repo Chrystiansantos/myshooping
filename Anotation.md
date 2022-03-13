@@ -295,3 +295,29 @@ useEffect(() => {
   }, [])
 ```
 
+### Ordenando documentos
+
+Para ordernar documentos irei utilizar a funcao orderBy, da seguinte forma orderBy('CAMPO_ORDENADO','TIPO_DE_ORDENACAO')
+
+```tsx
+useEffect(() => {
+    async function getProducts() {
+      try {
+        const subscribe =  firestore()
+          .collection('products')
+          .orderBy('quantity','asc')
+          .onSnapshot(querySnapshot => {
+            const products = querySnapshot.docs.map(doc => ({
+              id: doc.id,
+              ...doc.data()
+            })) as ProductProps[]
+            setProducts(products)
+          })
+          
+        // Sempre atentar a esse retorno pra destruir o subscribe, quando o componente for destruido
+        return () => subscribe();
+      } catch (error) { console.log(error) }
+    }
+    getProducts()
+  }, [])
+```

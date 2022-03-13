@@ -13,7 +13,7 @@ export function ShoppingList() {
       try {
         const subscribe =  firestore()
           .collection('products')
-          .limit(3)
+          .orderBy('quantity','asc')
           .onSnapshot(querySnapshot => {
             const products = querySnapshot.docs.map(doc => ({
               id: doc.id,
