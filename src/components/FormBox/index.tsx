@@ -14,7 +14,8 @@ export function FormBox() {
     try {
       await firestore()
         .collection('products')
-        .add({
+        .doc('my-custom-id')
+        .set({
           description,
           quantity,
           done: false,

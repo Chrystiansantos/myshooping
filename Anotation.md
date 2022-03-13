@@ -126,3 +126,29 @@ async function handleProductAdd() {
     }
   }
 ```
+
+### Adicionando um documento ao Firestore por meio do meu App com id personalizado.
+
+Para adicionar um id personalizado ao inves de utilizar add irei usar o metodo set, e irei usar doc para adicionar um meu id personalizado, da seguitne forma:
+
+```tsx
+async function handleProductAdd() {
+    try {
+      await firestore()
+        .collection('products')
+        // id que gerei
+        .doc('my-custom-id')
+        // dados a serem adicionados na collection
+        .set({
+          description,
+          quantity,
+          done: false,
+        }).then(() => {
+          Alert.alert('Produto adicionado com sucesso !')
+        })
+    } catch (error) {
+      console.log(error);
+      Alert.alert('Tente novamente :(')
+    }
+  }
+```
