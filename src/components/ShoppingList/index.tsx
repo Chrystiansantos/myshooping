@@ -11,19 +11,23 @@ export function ShoppingList() {
   useEffect(() => {
     async function getProducts() {
       try {
-        const { docs } = await firestore()
+        const subscribe =  firestore()
           .collection('products')
-          .get();
-        const products = docs.map(doc => ({
-          id: doc.id,
-          ...doc.data(),
-        })) as ProductProps[];
-        setProducts(products)
+          .where('quantity','>', 10)
+          .onSnapshot(querySnapshot => {
+            const products = querySnapshot.docs.map(doc => ({
+              id: doc.id,
+              ...doc.data()
+            })) as ProductProps[]
+            setProducts(products)
+          })
+          
+        // Sempre atentar a esse retorno pra destruir o subscribe, quando o componente for destruido
+        return () => subscribe();
       } catch (error) { console.log(error) }
     }
     getProducts()
   }, [])
-
 
   return (
     <FlatList

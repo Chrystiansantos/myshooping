@@ -201,4 +201,68 @@ useEffect(() => {
   }, [])
   ```
 
-  
+  #### **Leitura de um unico documento uma unica vez**
+
+  ```tsx
+    async function getUniqueProduct() {
+      const response = await firestore()
+        .collection('products')
+        // Ao utilizar o doc eu passo o id e dessa forma consigo trazer um unico documento.
+        .doc('MrpIBsbJdnhDCNjWDN7X')
+        .get();
+      console.log(response.data());
+      console.log(response.id);
+    }
+  ```
+
+  ### Leitura de documentos em realtime, caso haja alguma atualizacão ele atualiza as informacões
+
+  Pra acompanhar os dados em tempo real irei utilizar o metodo onSnapshot, e utilizar a funcao da seguinte maneira, pra buscar os dados em realtime, **Sempre devo me atentar de destruir o subiscribe ao desmontar o componente**
+
+  ```tsx
+  useEffect(() => {
+    async function getProducts() {
+      try {
+        const subscribe =  firestore()
+          .collection('products')
+          .onSnapshot(querySnapshot => {
+            const products = querySnapshot.docs.map(doc => ({
+              id: doc.id,
+              ...doc.data()
+            })) as ProductProps[]
+            setProducts(products)
+          })
+        // Sempre atentar a esse retorno pra destruir o subscribe, quando o componente for destruido
+        return () => subscribe();
+      } catch (error) { console.log(error) }
+    }
+    getProducts()
+  }, [])
+  ```
+
+### Filtrando consultaso no Firestore
+
+Para conseguir filtrar irei utilizar uma funcao where, da seguinte forma, where('COLLECTION_NAME','OPERADOR',CONDICAO)
+
+```tsx
+useEffect(() => {
+    async function getProducts() {
+      try {
+        const subscribe =  firestore()
+          .collection('products')
+          .where('quantity','', 10)
+          .onSnapshot(querySnapshot => {
+            const products = querySnapshot.docs.map(doc => ({
+              id: doc.id,
+              ...doc.data()
+            })) as ProductProps[]
+            setProducts(products)
+          })
+          
+        // Sempre atentar a esse retorno pra destruir o subscribe, quando o componente for destruido
+        return () => subscribe();
+      } catch (error) { console.log(error) }
+    }
+    getProducts()
+  }, [])
+```
