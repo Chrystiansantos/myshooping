@@ -266,3 +266,32 @@ useEffect(() => {
     getProducts()
   }, [])
 ```
+
+
+### Limitando a quantidade de dados de uma consulta
+
+Para que consiga limitar a quantidade de documentos precisarei utilizar a funcao limit(x), passando como argumento a quantidade de documentos que deseja vir no retorno.
+
+```tsx
+useEffect(() => {
+    async function getProducts() {
+      try {
+        const subscribe =  firestore()
+          .collection('products')
+          .limit(3)
+          .onSnapshot(querySnapshot => {
+            const products = querySnapshot.docs.map(doc => ({
+              id: doc.id,
+              ...doc.data()
+            })) as ProductProps[]
+            setProducts(products)
+          })
+          
+        // Sempre atentar a esse retorno pra destruir o subscribe, quando o componente for destruido
+        return () => subscribe();
+      } catch (error) { console.log(error) }
+    }
+    getProducts()
+  }, [])
+```
+
