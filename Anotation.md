@@ -152,3 +152,29 @@ async function handleProductAdd() {
     }
   }
 ```
+
+### FieldValues
+
+Posso utilizar o FieldValues pra trabalhar com data por exemplo aqui onde ele utiliza pra adicionar o timestamp informando o momento em que o anuncio foi criado.
+
+```tsx
+async function handleProductAdd() {
+    try {
+      await firestore()
+        .collection('products')
+        .add({
+          description,
+          quantity,
+          done: false,
+          createdAt: firestore.FieldValue.serverTimestamp()
+        })
+      Alert.alert('Produto adicionado com sucesso !')
+      setDescription('');
+      setQuantity(0);
+
+    } catch (error) {
+      console.log(error);
+      Alert.alert('Tente novamente :(')
+    }
+  }
+```

@@ -14,14 +14,16 @@ export function FormBox() {
     try {
       await firestore()
         .collection('products')
-        .doc('my-custom-id')
-        .set({
+        .add({
           description,
           quantity,
           done: false,
-        }).then(() => {
-          Alert.alert('Produto adicionado com sucesso !')
+          createdAt: firestore.FieldValue.serverTimestamp()
         })
+      Alert.alert('Produto adicionado com sucesso !')
+      setDescription('');
+      setQuantity(0);
+
     } catch (error) {
       console.log(error);
       Alert.alert('Tente novamente :(')
@@ -44,6 +46,7 @@ export function FormBox() {
         size="small"
         style={{ marginHorizontal: 8 }}
         onChangeText={value => setQuantity(Number(value))}
+        value={String(quantity)}
       />
 
       <ButtonIcon
