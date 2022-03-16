@@ -376,3 +376,18 @@ async function handleDoneToggle() {
     }
   }
 ```
+
+### Removendo documento
+
+Pra remover o documento irei utilizar o metodo delete, mas antes irei usar a funcao doc para selecionar o documento:
+
+```tsx
+try {
+      await firestore()
+      .collection('products')
+      .doc(data.id)
+      .delete();
+    } catch (error) {
+      Alert.alert('Não foi possível remover este documento tente novamente')
+    }
+```

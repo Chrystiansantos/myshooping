@@ -32,6 +32,17 @@ export function Product({ data }: Props) {
     }
   }
 
+  async function handleDelete() {
+    try {
+      await firestore()
+      .collection('products')
+      .doc(data.id)
+      .delete();
+    } catch (error) {
+      Alert.alert('Não foi possível remover este documento tente novamente')
+    }
+  }
+
   return (
     <Container>
       <Info>
@@ -50,6 +61,7 @@ export function Product({ data }: Props) {
         />
 
         <ButtonIcon
+        onPress={handleDelete}
           icon="delete"
           color="alert"
         />
