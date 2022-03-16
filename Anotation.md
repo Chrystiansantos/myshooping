@@ -391,3 +391,34 @@ try {
       Alert.alert('Não foi possível remover este documento tente novamente')
     }
 ```
+
+### Offline com firestore
+
+Ele funciona de forma que as alteracoes que o usuario facam offline sejam automaticamente sincronizada assim que ele adiquire conexão.
+
+
+### Emulador do FireStore.
+
+O emulador serve para conseguirmos testar nosso App sem a necessidade de fazermos teste no ambiente de producao, ou ate mesmo a necessidade de se ter um projeto pra testes.
+
+Primeiro passo precisamos instalar a cli do emulador como seguinte comando:
+
+```bash
+#Instalando
+❯ curl -sL firebase.tools | bash
+#Executando
+❯ firebase emulators:start --oly firestore
+```
+
+A seguir apos o emulador esta sendo executado irei adicionar o seguinte arquivo dentro de index.js, e irei adicionar o seguinte trecho:
+
+```tsx
+import '@react-native-firebase/app';
+import firestore from '@react-native-firebase/firestore';
+
+if (__DEV__) {
+  firestore().useEmulator('localhost', 8080);
+}
+
+const db = firestore()
+```
