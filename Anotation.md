@@ -463,3 +463,29 @@ function handleUpload() {
     .catch(err => console.log(err));
   }
 ```
+
+### Progesso de upload
+
+A seguite funcão faz o upload das files, onde eu crio um nome, em seguida crio uma referencia dentro do meu storage, lembrando que **images** seria o nome da pasta dentro do firebase, em seguida passo o nome eo formato da file. Feito isso atribuo em uma variavel onde irei conseguir ouvir o evento com o metodo **on**, podendo entao acompanhar o status do upload.
+
+```tsx
+function handleUpload() {
+    // Nome file
+    const fileName = new Date().getTime();
+    // Onde quero salvar o arquivo, irei criar uma referencia p ele
+    const reference = storage().ref(`/images/${fileName}.png`);
+    // Ele inicia o upload porém retorna uma task onde consigo acompanhar o envio atraves do on
+    const uploadTask = reference.putFile(image);
+    
+    uploadTask.on('state_changed', taskSnapshot => {
+      const percentage = ((taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) * 100).toFixed(0)
+      setProgress(percentage);
+      setBytesTransfeerred(`${taskSnapshot.bytesTransferred} transferidode ${taskSnapshot.totalBytes}`)
+    })
+
+    uploadTask.then(() => {
+      Alert.alert('Upload concluído com sucesso')
+    })
+
+  }
+```
