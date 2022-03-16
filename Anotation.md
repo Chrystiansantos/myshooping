@@ -489,3 +489,22 @@ function handleUpload() {
 
   }
 ```
+
+### Listando arquivos do firebase
+
+Para conseguir listar as imagens do meu App, irei utilizar a seguinte funcão.
+
+```tsx
+useEffect(() => {
+    storage()
+      .ref('/images')
+      .list()
+      .then(result => {
+        const files = result.items.map(file => ({
+          name: file.name,
+          path: file.fullPath
+        }));
+        setPhotos(files)
+      })
+  }, [])
+```
