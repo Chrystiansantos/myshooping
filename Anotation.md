@@ -422,3 +422,44 @@ if (__DEV__) {
 
 const db = firestore()
 ```
+
+## Cloud Storage
+
+### Ativando o Cloud Storage
+
+Irei clicar no storage, em seguida ele ira me redirecionar para o console onde consigo ver os arquivos irei alterar a regra pra leitura e escrita simplementes alterando a linha pra seguinte maneira:
+
+```
+allow read, write: if false; => allow read, write;
+```
+
+Em seguida clico em **Publicar**
+
+### Instalando o Cloud Storage.
+
+Primeiro passo irei instalar a seguinte lib:
+
+```bash
+❯ yarn add @react-native-firebase/storage
+
+# Caso esteja no ios executar o seguinte comando
+❯ cd ios/ && pod install
+```
+
+### Upload de arquivos
+
+Primeiro passo irei importar a seguinte lib:
+
+```tsx
+import storage from '@react-native-firebase/storage'
+
+function handleUpload() {
+    // Nome file
+    const fileName = new Date().getTime();
+    // Onde quero salvar o arquivo, irei criar uma referencia p ele
+    const reference = storage().ref(`/images/${fileName}.png`);
+    reference.putFile(image)
+    .then(() => Alert.alert('Upload concluido'))
+    .catch(err => console.log(err));
+  }
+```
