@@ -508,3 +508,14 @@ useEffect(() => {
       })
   }, [])
 ```
+
+### Gerando link pra acessar as files
+
+Para conseguir apresentar uma file preciso gerar um link e para gerar esse link utilizo a seguinte funcao. Onde o path seria o retornado pelo firebase na funcao acima
+
+```tsx
+async function handleShowImage(path: string) {
+    const urlImage = await storage().ref(path).getDownloadURL();
+    setPhotoSelected(urlImage)
+  }
+```
