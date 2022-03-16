@@ -356,3 +356,23 @@ useEffect(() => {
     getProducts()
   }, [])
 ```
+
+### Atualizando documento
+
+Pra atualizar o documento irei utilizar o metodo update, mas antes irei utilizar o doc, passando a hash do documento a ser utilizado da seguinte forma:
+
+```tsx
+async function handleDoneToggle() {
+    try {
+      await firestore()
+        .collection('products')
+        .doc(data.id)
+        .update({
+          done: !data.done,
+        })
+      Alert.alert('Documento atualizado com sucesso')
+    } catch (error) {
+      Alert.alert('Não foi possível atualizar este documento tente novamente')
+    }
+  }
+```
