@@ -12,9 +12,13 @@ export function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  async function handleSignInWithAnonimous() {
-    const { user } = await auth().signInAnonymously();
-    console.log(user)
+  async function handleSignInWithEmailAndPassword() {
+    try {
+      const { user } = await auth().signInWithEmailAndPassword(email, password);
+      console.log(user)
+    } catch (error) {
+
+    }
   }
 
   async function handleCreateUserAccount() {
@@ -52,7 +56,7 @@ export function SignIn() {
         onChangeText={setPassword}
       />
 
-      <Button title="Entrar" onPress={handleSignInWithAnonimous} />
+      <Button title="Entrar" onPress={handleSignInWithEmailAndPassword} />
 
       <Account>
         <ButtonText title="Recuperar senha" onPress={() => { }} />

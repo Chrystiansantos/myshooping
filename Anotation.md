@@ -592,3 +592,18 @@ async function handleCreateUserAccount() {
     Alert.alert('Usuário criado com sucesso !')
   }
 ```
+
+### Autenticando utilizando email e senha
+
+Para autenticar irei utiliza a funcao **signInWithEmailAndPassword()** passando email e senha como parametro da funcao, da seguinte forma. Lembrando que preciso importar o **auth**
+
+```ts
+async function handleSignInWithEmailAndPassword() {
+    try {
+      const { user } = await auth().signInWithEmailAndPassword(email, password);
+      console.log(user)
+    } catch (error) {
+
+    }
+  }
+```
