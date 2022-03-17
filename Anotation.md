@@ -484,6 +484,10 @@ function handleUpload() {
     })
 
     uploadTask.then(() => {
+       // Aqui eu pego o link de acesso da imagem e irei salva-lo no meu database, pra nao ter necessidade de utilizar o getDownloadUrl() sempre que precisar buscar a imagem.
+      const imageUrl = await reference.getDownloadURL()
+      console.log(imageUrl)
+
       Alert.alert('Upload concluído com sucesso')
     })
 
@@ -493,6 +497,8 @@ function handleUpload() {
 ### Listando arquivos do firebase
 
 Para conseguir listar as imagens do meu App, irei utilizar a seguinte funcão.
+
+**Sempre que for cadastrar uma imagem maioria das vezes registrar o link dessa imagem no database, pois quando precisar reenderiza-la não precisarei utilizar o getDownloadURL, sendo assim economizando recursos**
 
 ```tsx
 useEffect(() => {
@@ -535,3 +541,54 @@ Usando a seguinte funcao **getMetadata** eu consigo pegar varias informacoes do 
   }
 ```
 
+### Removendo arquivos
+
+Para conseguir excluir alguma file precisarei passar a ref dela, em seguida irei chamar a funcao delete, nesse caso eu carrego as imagens novamente por nao estar observando as alteracões.
+
+```tsx
+async function handleDeleteImage(path: string) {
+    try {
+      await storage()
+        .ref(path)
+        .delete();
+      await fetchImages()
+      Alert.alert('Imagem excluida com sucesso !')
+    } catch (error) {
+      Alert.alert('Não foi possível excluir')
+    }
+  }
+  ```
+
+
+## Autenticacão
+
+Irei clicar em **Autenticacao**. Em seguida clicar em **Primeros passos**. Após irei selecionar o metodo de autenticacao e pressionar **Ativar** e depois **Salvar**
+
+Irei instalar a seguinte lib:
+
+```bash
+❯ yarn add @react-native-firebase/auth
+# Caso esteja no ios preciso rodar o seguinte comando:
+❯ cd ios/ && pod install
+```
+
+### Autenticando com email e senha:
+
+Na tela onde seleciona o metodo de Autenticacao irei selecionar **Email / Senha** e irei clicar em salvar
+
+### Crianco uma conta com email e senha
+
+Para criar uma nova conta com email e senha primeriamente preciso da seguinte importacao:
+
+```ts
+import auth from '@react-native-firebase/auth';
+```
+
+Em seguida irei criar essa funcao onde irei executar a funcao auth(), e em seguida chamar a funcao createUserWithEmailAndPasswor passando email e senha como paramentro da seguinte forma:
+
+```tsx
+async function handleCreateUserAccount() {
+    await auth().createUserWithEmailAndPassword(email, password);
+    Alert.alert('Usuário criado com sucesso !')
+  }
+```
