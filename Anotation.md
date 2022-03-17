@@ -519,3 +519,19 @@ async function handleShowImage(path: string) {
     setPhotoSelected(urlImage)
   }
 ```
+
+### Obtendo informacões dos arquivos
+
+Usando a seguinte funcao **getMetadata** eu consigo pegar varias informacoes do arquivo com nome, criancao entre varias outras informacoes relevantes
+
+```tsx
+
+  async function handleShowImage(path: string) {
+    const urlImage = await storage().ref(path).getDownloadURL();
+    setPhotoSelected(urlImage)
+
+    const info = await storage().ref(path).getMetadata();
+    setPhotoInfo(`Upload realizado em ${info.timeCreated}`)
+  }
+```
+
