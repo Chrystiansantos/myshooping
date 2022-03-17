@@ -16,8 +16,10 @@ export function SignIn() {
     try {
       const { user } = await auth().signInWithEmailAndPassword(email, password);
       console.log(user)
-    } catch (error) {
-
+    } catch ({ code }) {
+      if (code === 'auth/user-not-found' || code === 'auth/wrong-password') {
+        return Alert.alert('Usuário não encotrado. E-mail ou senha inválida')
+      }
     }
   }
 
