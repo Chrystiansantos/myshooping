@@ -15,15 +15,19 @@ export function ShoppingList() {
           .collection('products')
           .orderBy('quantity','asc')
           .onSnapshot(querySnapshot => {
-            const products = querySnapshot.docs.map(doc => ({
-              id: doc.id,
-              ...doc.data()
-            })) as ProductProps[]
-            setProducts(products)
+            if (querySnapshot) {
+             const products = querySnapshot.docs.map(doc => ({
+               id: doc.id,
+               ...doc.data()
+             })) as ProductProps[]
+             setProducts(products)
+            }
           })
-          
         // Sempre atentar a esse retorno pra destruir o subscribe, quando o componente for destruido
-        return () => subscribe();
+        return () => {
+          setProducts([]);
+          subscribe()
+        };
       } catch (error) { console.log(error) }
     }
     getProducts()

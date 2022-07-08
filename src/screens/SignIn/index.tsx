@@ -15,11 +15,19 @@ export function SignIn() {
   async function handleSignInWithEmailAndPassword() {
     try {
       const { user } = await auth().signInWithEmailAndPassword(email, password);
-      console.log(user)
     } catch ({ code }) {
       if (code === 'auth/user-not-found' || code === 'auth/wrong-password') {
         return Alert.alert('Usuário não encotrado. E-mail ou senha inválida')
       }
+    }
+  }
+
+  async function handleForgotPassword(){
+    try {
+      await auth().sendPasswordResetEmail(email)
+      Alert.alert('Enviamos um link, no seu e-mail, para redefirnir sua senha')
+    } catch (error) {
+     console.log(error) 
     }
   }
 
@@ -28,7 +36,6 @@ export function SignIn() {
       await auth().createUserWithEmailAndPassword(email, password);
       Alert.alert('Usuário criado com sucesso !')
     } catch ({ code }) {
-      console.log(code)
       if (code === 'auth/email-already-in-use') {
         return Alert.alert('Email nao disponível')
       }
@@ -61,7 +68,7 @@ export function SignIn() {
       <Button title="Entrar" onPress={handleSignInWithEmailAndPassword} />
 
       <Account>
-        <ButtonText title="Recuperar senha" onPress={() => { }} />
+        <ButtonText title="Recuperar senha" onPress={handleForgotPassword} />
         <ButtonText title="Criar minha conta" onPress={handleCreateUserAccount} />
       </Account>
     </Container>

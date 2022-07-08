@@ -607,3 +607,46 @@ async function handleSignInWithEmailAndPassword() {
     }
   }
 ```
+
+### Observando se o usuario esta autenticado:
+
+Pra verificar se o usuario esta autenticado poderei utilizar o seguinte subscribe, por exemplo nesse caso estou usando ele no useEffct do index de rotas, onde consido atraves do metodo **onAuthStateChanged** verifiar se o usuario esta logado ou nao.
+
+```tsx
+useEffect(() => {
+    const subscriber = auth().onAuthStateChanged((userInfo => {
+      setUser(userInfo)
+    }));
+
+    return subscriber;
+  }, [])
+```
+
+### Desautenticacão
+
+Pra realizar o logou precisarei executar o seguinte metodo:
+
+```ts
+async function handleSLogout() {
+    auth().signOut();
+  }
+```
+
+### Redefinindo a senha:
+
+Irei clicar em **Autenticacão => Template => Redefinicão de senha**, caso ache necessário eu poderiei editar o template e deixar personalizado com meu app.
+
+Irei clicar em editar modelo, preenchendo as informacões.
+
+Para que eu consiga resetar a senha precisarei utilizar a seguinte funcão que ira disparar o email, pra recuperacão de senha para o usuário.
+
+```tsx
+async function handleForgotPassword(){
+    try {
+      await auth().sendPasswordResetEmail(email)
+      Alert.alert('Enviamos um link, no seu e-mail, para redefirnir sua senha')
+    } catch (error) {
+     console.log(error) 
+    }
+  }
+```
